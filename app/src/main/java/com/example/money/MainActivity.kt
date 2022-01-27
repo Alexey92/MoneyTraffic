@@ -8,20 +8,26 @@ import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.money.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var bindingClass : ActivityMainBinding
+    lateinit var binding : ActivityMainBinding
     private var total_sum : Int = 0
     private var launcher: ActivityResultLauncher<Intent>? = null
+    private val adapter = RecordAdapter()
+
+//    var List
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bindingClass = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(bindingClass.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        init()
 
         // Возвращение в основное окно из новых окон
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -39,13 +45,19 @@ class MainActivity : AppCompatActivity() {
                 // Чтение комментария
                 record.description = result.data?.getStringExtra(Constants.DESCRIPTION).toString()
 
-                bindingClass.apply {
+                // Чтение категории
+                record.category = result.data?.getIntExtra(Constants.CATEGORY, 0)
+
+                binding.apply {
                     textMoney.text = total_sum.toString()   // Обновляем баланс
 
                     // Обновляем записи в логе
-                    textLastOperation2.text = bindingClass.textLastOperation1.text
-                    textLastOperation1.text = bindingClass.textLastOperation.text
+                    textLastOperation2.text = binding.textLastOperation1.text
+                    textLastOperation1.text = binding.textLastOperation.text
                     textLastOperation.text = record.createLog()
+
+
+                    adapter.addRecord(record)
                 }
             }
         }
@@ -64,19 +76,27 @@ class MainActivity : AppCompatActivity() {
 
     // Скрыть/посмотреть историю записей
     fun onClickViewRecords(view: View){
-        if (bindingClass.textLastOperation.visibility == View.GONE) {
-            Log.d("MyLog", "enable log")
+        binding.apply {
+            if (textLastOperation.visibility == View.GONE) {
+                Log.d("MyLog", "enable log")
 
-            bindingClass.textLastOperation.visibility = View.VISIBLE
-            bindingClass.textLastOperation1.visibility = View.VISIBLE
-            bindingClass.textLastOperation2.visibility = View.VISIBLE
+                textLastOperation.visibility = View.VISIBLE
+                textLastOperation1.visibility = View.VISIBLE
+                textLastOperation2.visibility = View.VISIBLE
+            } else {
+                Log.d("MyLog", "disable log")
+
+                textLastOperation.visibility = View.GONE
+                textLastOperation1.visibility = View.GONE
+                textLastOperation2.visibility = View.GONE
+            }
         }
-        else{
-            Log.d("MyLog", "disable log")
+    }
 
-            bindingClass.textLastOperation.visibility = View.GONE
-            bindingClass.textLastOperation1.visibility = View.GONE
-            bindingClass.textLastOperation2.visibility = View.GONE
+    private fun init(){
+        binding.apply {
+            rcView.layoutManager =  LinearLayoutManager(this@MainActivity)
+            rcView.adapter = adapter
         }
     }
 }

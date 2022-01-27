@@ -51,7 +51,7 @@
         android:background="#0016268F"
         android:onClick="onClickIncome"
         android:text="Доход"
-        android:textColor="@color/black"
+        android:textColor="@color/grey"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -77,4 +77,38 @@
         android:text="Текущий баланс:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnIncome" />
+
+    <LinearLayout
+        android:id="@+id/linLayout"
+        android:layout_width="98dp"
+        android:layout_height="638dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editTextDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textBalance">
+
+        <ImageView
+            android:id="@+id/imageHome"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="#00FFFFFF"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="onClickHome"
+            app:srcCompat="@drawable/home_ok" />
+
+        <ImageView
+            android:id="@+id/imageFood"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:onClick="onClickFood"
+            app:srcCompat="@drawable/food" />
+
+        <ImageView
+            android:id="@+id/imageCar"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:onClick="onClickCar"
+            app:srcCompat="@drawable/car" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

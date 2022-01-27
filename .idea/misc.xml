@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/activity_add_record.xml" value="0.264" />
-        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/activity_main.xml" value="0.6" />
+        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/activity_add_record.xml" value="0.4" />
+        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/record_item.xml" value="0.4" />
       </map>
     </option>
   </component>

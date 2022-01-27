@@ -3,6 +3,7 @@ package com.example.money
 class Record {
     var sum: Int? = null
     var description: String? = null
+    var category: Int? = null
 
     fun createLog(): String{
         var linkStr: String = ": "
