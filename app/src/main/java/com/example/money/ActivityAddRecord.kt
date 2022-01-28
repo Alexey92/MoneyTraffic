@@ -33,18 +33,20 @@ class ActivityAddRecord : AppCompatActivity() {
         direction = dirInput;
         category = ItemCategory.Income.Value
 
-        // Замена фонов кнопок Доход и Расход
-        binding.btnOutcome.setBackgroundColor(ContextCompat.getColor(this, R.color.empty))
-        binding.btnIncome.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_pale))
+        binding.apply {
+            // Замена фонов кнопок Доход и Расход
+            btnOutcome.setBackgroundColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.empty))
+            btnIncome.setBackgroundColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.purple_pale))
 
-        binding.btnOutcome.setTextColor(ContextCompat.getColor(this, R.color.grey))
-        binding.btnIncome.setTextColor(ContextCompat.getColor(this, R.color.black))
+            btnOutcome.setTextColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.grey))
+            btnIncome.setTextColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.black))
 
-        // Замена размеров текста кнопок Доход и Расход
-        binding.btnOutcome.textSize = 14F
-        binding.btnIncome.textSize = 16F
+            // Замена размеров текста кнопок Доход и Расход
+            btnOutcome.textSize = 14F
+            btnIncome.textSize = 16F
 
-        binding.linLayout.visibility = View.GONE
+            linLayout.visibility = View.GONE
+        }
     }
 
     // Выбор режима "Расход"
@@ -52,32 +54,36 @@ class ActivityAddRecord : AppCompatActivity() {
         direction = dirOutput;
         category = ItemCategory.Home.Value
 
-        // Замена фонов кнопок Доход и Расход
-        binding.btnOutcome.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_pale))
-        binding.btnIncome.setBackgroundColor(ContextCompat.getColor(this, R.color.empty))
+        binding.apply {
+            // Замена фонов кнопок Доход и Расход
+            btnOutcome.setBackgroundColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.purple_pale))
+            btnIncome.setBackgroundColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.empty))
 
-        binding.btnOutcome.setTextColor(ContextCompat.getColor(this, R.color.black))
-        binding.btnIncome.setTextColor(ContextCompat.getColor(this, R.color.grey))
+            btnOutcome.setTextColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.black))
+            btnIncome.setTextColor(ContextCompat.getColor(this@ActivityAddRecord, R.color.grey))
 
-        // Замена размеров текста кнопок Доход и Расход
-        binding.btnOutcome.textSize = 16F
-        binding.btnIncome.textSize = 14F
+            // Замена размеров текста кнопок Доход и Расход
+            btnOutcome.textSize = 16F
+            btnIncome.textSize = 14F
 
-        binding.linLayout.visibility = View.VISIBLE
+            linLayout.visibility = View.VISIBLE
+        }
     }
 
     // Внесение записи
     fun onClickGoMainActivity(view: View){
+        var record = Record()
 
         // Если нажата кнопка Расход - записываем значение со знаком минус, иначе просто значение
-        var data : Int
-        if (direction == dirInput) data = binding.editTextSum.text.toString().toInt()
-        else                       data = -binding.editTextSum.text.toString().toInt()
+        if (direction == dirInput) record.sum = binding.editTextSum.text.toString().toInt()
+        else                       record.sum = -binding.editTextSum.text.toString().toInt()
+
+        record.description = binding.editTextDescription.text.toString()
+        record.category = category
 
         // Передача внесенной записи в основное окно
-        intent.putExtra(Constants.SUM, data)
-        intent.putExtra(Constants.DESCRIPTION, binding.editTextDescription.text.toString())
-        intent.putExtra(Constants.CATEGORY, category)
+        intent.putExtra(Constants.RECORD, record)
+
         setResult(RESULT_OK, intent)
         finish()    // Закрытие окна
     }

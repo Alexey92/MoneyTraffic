@@ -19,8 +19,6 @@ class MainActivity : AppCompatActivity() {
     private var launcher: ActivityResultLauncher<Intent>? = null
     private val adapter = RecordAdapter()
 
-//    var List
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,17 +34,11 @@ class MainActivity : AppCompatActivity() {
             if(result.resultCode == RESULT_OK){
                 var record = Record()
 
-                // Чтение суммы
-                record.sum = result.data?.getIntExtra(Constants.SUM, 0)
+                // Чтение записи
+                record = result.data?.getSerializableExtra(Constants.RECORD) as Record
 
                 // Прибавляем сумму к балансу
                 total_sum += record.sum!!
-
-                // Чтение комментария
-                record.description = result.data?.getStringExtra(Constants.DESCRIPTION).toString()
-
-                // Чтение категории
-                record.category = result.data?.getIntExtra(Constants.CATEGORY, 0)
 
                 binding.apply {
                     textMoney.text = total_sum.toString()   // Обновляем баланс
@@ -55,7 +47,6 @@ class MainActivity : AppCompatActivity() {
                     textLastOperation2.text = binding.textLastOperation1.text
                     textLastOperation1.text = binding.textLastOperation.text
                     textLastOperation.text = record.createLog()
-
 
                     adapter.addRecord(record)
                 }

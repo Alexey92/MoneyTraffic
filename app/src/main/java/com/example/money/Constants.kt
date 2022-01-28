@@ -5,4 +5,5 @@ object Constants {
     const val SUM = "sum"
     const val DESCRIPTION = "description"
     const val CATEGORY = "category"
+    const val RECORD = "record"
 }

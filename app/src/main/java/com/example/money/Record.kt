@@ -1,6 +1,8 @@
 package com.example.money
 
-class Record {
+import java.io.Serializable
+
+class Record: Serializable{
     var sum: Int? = null
     var description: String? = null
     var category: Int? = null
