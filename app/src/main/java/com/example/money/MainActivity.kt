@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.money.databinding.ActivityMainBinding
@@ -33,6 +34,22 @@ class MainActivity : AppCompatActivity() {
 
         // Инициализация RecyclerView
         init()
+
+        binding.navigation.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.records -> {
+                    Toast.makeText(this, "records", Toast.LENGTH_SHORT).show()
+                }
+                R.id.statistics -> {
+                    Toast.makeText(this, "statistics", Toast.LENGTH_SHORT).show()
+                }
+                R.id.settings -> {
+                    Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
+                }
+            }
+            binding.drawer.closeDrawer(GravityCompat.START)
+            true
+        }
 
         // Фиксируем нажатия на элементы Bottom Menu
         binding.bottomMenu.setOnItemSelectedListener {
@@ -69,11 +86,6 @@ class MainActivity : AppCompatActivity() {
                 binding.apply {
                     textMoney.text = totalSum.toString()   // Обновляем баланс
 
-                    // Обновляем записи в логе
-                    textLastOperation2.text = binding.textLastOperation1.text
-                    textLastOperation1.text = binding.textLastOperation.text
-                    textLastOperation.text = record.createLog()
-
                     // Передаем новый элемент в RecyclerView
                     adapter.addRecord(record)
                 }
@@ -102,25 +114,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return true
-    }
-
-    // Скрыть/посмотреть историю записей
-    fun onClickViewRecords(view: View){
-        binding.apply {
-            if (textLastOperation.visibility == View.GONE) {
-                Log.d("MyLog", "enable log")
-
-                textLastOperation.visibility = View.VISIBLE
-                textLastOperation1.visibility = View.VISIBLE
-                textLastOperation2.visibility = View.VISIBLE
-            } else {
-                Log.d("MyLog", "disable log")
-
-                textLastOperation.visibility = View.GONE
-                textLastOperation1.visibility = View.GONE
-                textLastOperation2.visibility = View.GONE
-            }
-        }
     }
 
     // Инициализация RecyclerView

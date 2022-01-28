@@ -5,9 +5,11 @@
       <map>
         <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/drawable/bottom_selector.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/activity_add_record.xml" value="0.4" />
-        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/header.xml" value="0.536" />
         <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/layout/record_item.xml" value="0.4" />
         <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/menu/bottom_menu.xml" value="0.25" />
+        <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/menu/left_menu.xml" value="0.25" />
         <entry key="..\:/Users/medin/AndroidStudioProjects/Money/app/src/main/res/menu/main_menu.xml" value="0.25" />
       </map>
     </option>
