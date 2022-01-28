@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="list"
+        android:id="@+id/list"
+        android:icon="@drawable/ic_list"
+        android:orderInCategory="2"
+        />
+    <item
+        android:title="add"
+        android:id="@+id/add"
+        android:icon="@drawable/ic_add"
+        android:orderInCategory="3"
+        />
+    <item
+        android:title="find"
+        android:id="@+id/find"
+        android:icon="@drawable/ic_find"
+        android:orderInCategory="1"
+        />
+</menu>

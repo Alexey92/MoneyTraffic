@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,7 +31,27 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Money"
 
+        // Инициализация RecyclerView
         init()
+
+        // Фиксируем нажатия на элементы Bottom Menu
+        binding.bottomMenu.setOnItemSelectedListener {
+            //  Какой элемент выбран
+            when(it.itemId){
+                // Открытие окна внесения новой записи
+                R.id.add -> {
+                    // Создание интента на запуск ActivityAddRecord с данными
+                    val intent = Intent(this, ActivityAddRecord::class.java)
+                    intent.putExtra(Constants.TOTAL_SUM, totalSum)
+
+                    // Запуск интента
+                    launcher?.launch(intent)
+                }
+                R.id.list -> Toast.makeText(this, "list", Toast.LENGTH_SHORT).show()
+                R.id.find -> Toast.makeText(this, "find", Toast.LENGTH_SHORT).show()
+            }
+            true
+        }
 
         // Возвращение в основное окно из новых окон
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -53,39 +74,34 @@ class MainActivity : AppCompatActivity() {
                     textLastOperation1.text = binding.textLastOperation.text
                     textLastOperation.text = record.createLog()
 
+                    // Передаем новый элемент в RecyclerView
                     adapter.addRecord(record)
                 }
             }
         }
     }
 
+    // Заполнение ActionBar при запуске Activity
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
 
         return true
     }
 
+    // Фиксируем нажатие на элементы ActionBar
     override fun onOptionsItemSelected(item: MenuItem): Boolean{
         when(item.itemId){
+
+            // Обработка кнопки "Назад"
             android.R.id.home -> finish()
+
+            // Обработка кнопки "Обнулить"
             R.id.zero -> {
                 totalSum = 0
                 binding.textMoney.text = totalSum.toString()   // Обновляем баланс
             }
-
         }
-
         return true
-    }
-
-    // Открытие окна внесения новой записи
-    fun onClickGoAddRecord(view: View){
-        // Создание интента на запуск ActivityAddRecord с данными
-        val intent = Intent(this, ActivityAddRecord::class.java)
-        intent.putExtra(Constants.TOTAL_SUM, totalSum)
-
-        // Запуск интента
-        launcher?.launch(intent)
     }
 
     // Скрыть/посмотреть историю записей
@@ -107,6 +123,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Инициализация RecyclerView
     private fun init(){
         binding.apply {
             rcView.layoutManager =  LinearLayoutManager(this@MainActivity)
