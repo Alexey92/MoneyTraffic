@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:background="@color/green"
+    android:layout_height="match_parent"
+    android:background="#8DCFE7EA"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -41,8 +41,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcView"
             android:layout_width="match_parent"
-            android:layout_height="540dp"
-            android:layout_marginBottom="64dp"
+            android:layout_height="200dp"
+            android:layout_weight="1"
             app:layout_constraintBottom_toTopOf="@+id/bottomMenu"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -54,7 +54,8 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomMenu"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
+            android:layout_weight="0"
             app:itemIconTint="@drawable/bottom_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
