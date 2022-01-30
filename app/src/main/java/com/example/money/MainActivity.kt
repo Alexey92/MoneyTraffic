@@ -15,6 +15,7 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.money.databinding.ActivityMainBinding
+import com.example.money.db.RecordDbManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private var launcher: ActivityResultLauncher<Intent>? = null    // Переменная для запуска интента
     private val adapter = RecordAdapter()       // Переменная для адаптера, необходим для заполнения RecyclerView
     var pref: SharedPreferences? = null         // Переменная для сохранения баланса при закрытии приложения
+    val recordDbManager = RecordDbManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,16 @@ class MainActivity : AppCompatActivity() {
         // Чтение баланса из памяти
         balance = pref?.getInt("balance", 0)!!
         binding.textMoney.text = balance.toString()
+
+        // Открываем ДМ
+        recordDbManager.openDb()
+        // Чтение записей из ДБ
+        val dataList = recordDbManager.readDbData()
+        for (item in dataList){
+            var recordFromDb = item
+            // Передаем новый элемент в RecyclerView
+            adapter.addRecord(recordFromDb)
+        }
 
         // Инициализация RecyclerView
         init()
@@ -98,6 +110,9 @@ class MainActivity : AppCompatActivity() {
 
                     // Передаем новый элемент в RecyclerView
                     adapter.addRecord(record)
+
+                    // Сохраняем в БД
+                    recordDbManager.insertToDb(record)
                 }
             }
         }
@@ -152,5 +167,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         saveData(balance)
+        recordDbManager.closeDb()
     }
 }
