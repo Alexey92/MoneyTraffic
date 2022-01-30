@@ -1,12 +1,12 @@
 package com.example.money
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -19,9 +19,10 @@ import com.example.money.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
-    private var totalSum : Int = 0
-    private var launcher: ActivityResultLauncher<Intent>? = null
-    private val adapter = RecordAdapter()
+    private var balance : Int = 0  // Текущий баланс
+    private var launcher: ActivityResultLauncher<Intent>? = null    // Переменная для запуска интента
+    private val adapter = RecordAdapter()       // Переменная для адаптера, необходим для заполнения RecyclerView
+    var pref: SharedPreferences? = null         // Переменная для сохранения баланса при закрытии приложения
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +31,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Money"
+        supportActionBar?.title = "Money"   // Заголовок
+
+        // Инициализация области памяти для хранения баланса
+        pref = getSharedPreferences("TABLE", Context.MODE_PRIVATE)
+        // Чтение баланса из памяти
+        balance = pref?.getInt("balance", 0)!!
+        binding.textMoney.text = balance.toString()
 
         // Инициализация RecyclerView
         init()
 
+        // Слушатель нажатий элементов бокового меню
         binding.navigation.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.records -> {
@@ -47,11 +55,13 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            // Закрытие бокового меню
             binding.drawer.closeDrawer(GravityCompat.START)
             true
         }
 
-        // Фиксируем нажатия на элементы Bottom Menu
+        // Слушатель нажатий элементов Bottom Menu
         binding.bottomMenu.setOnItemSelectedListener {
             //  Какой элемент выбран
             when(it.itemId){
@@ -59,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.add -> {
                     // Создание интента на запуск ActivityAddRecord с данными
                     val intent = Intent(this, ActivityAddRecord::class.java)
-                    intent.putExtra(Constants.TOTAL_SUM, totalSum)
+                    intent.putExtra(Constants.TOTAL_SUM, balance)
 
                     // Запуск интента
                     launcher?.launch(intent)
@@ -81,10 +91,10 @@ class MainActivity : AppCompatActivity() {
                 record = result.data?.getSerializableExtra(Constants.RECORD) as Record
 
                 // Прибавляем сумму к балансу
-                totalSum += record.sum!!
+                balance += record.sum!!
 
                 binding.apply {
-                    textMoney.text = totalSum.toString()   // Обновляем баланс
+                    textMoney.text = balance.toString()   // Обновляем баланс
 
                     // Передаем новый элемент в RecyclerView
                     adapter.addRecord(record)
@@ -109,8 +119,8 @@ class MainActivity : AppCompatActivity() {
 
             // Обработка кнопки "Обнулить"
             R.id.zero -> {
-                totalSum = 0
-                binding.textMoney.text = totalSum.toString()   // Обновляем баланс
+                balance = 0
+                binding.textMoney.text = balance.toString()   // Обновляем баланс
             }
         }
         return true
@@ -122,5 +132,25 @@ class MainActivity : AppCompatActivity() {
             rcView.layoutManager =  LinearLayoutManager(this@MainActivity)
             rcView.adapter = adapter
         }
+    }
+
+    // Функция для сохранения баланса в памяти
+    fun saveData(res: Int){
+        val editor = pref?.edit()
+        editor?.putInt("balance",res)
+        editor?.apply()
+    }
+
+    // Функция для удаления баланса из памяти
+    fun clearData(res: Int){
+        val editor = pref?.edit()
+        editor?.clear()
+        editor?.apply()
+    }
+
+    // Сохраняем баланс при закрытии приложения
+    override fun onDestroy() {
+        super.onDestroy()
+        saveData(balance)
     }
 }
